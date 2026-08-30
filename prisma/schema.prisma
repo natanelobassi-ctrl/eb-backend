@@ -85,6 +85,7 @@ model Classe {
   nom       String   @unique
   cycle     Cycle
   eleves    Eleve[]
+candidatures Candidature[]
   createdAt DateTime @default(now())
 }
 
