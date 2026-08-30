@@ -9,11 +9,10 @@ const {
 
 const MAX_FAILED_LOGINS = 5;
 const LOCK_DURATION_MINUTES = 15;
-
 const cookieOptions = (maxAgeMs) => ({
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: true,
+  sameSite: 'none',
   maxAge: maxAgeMs,
 });
 
