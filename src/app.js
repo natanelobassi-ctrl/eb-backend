@@ -22,6 +22,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.use('/auth', authRoutes);
 app.use('/classe', classeRoutes);
 app.use('/eleve', eleveRoutes);
+app.use('/parent', parentPortalRoutes);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: 'Erreur serveur.' });
