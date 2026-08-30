@@ -5,7 +5,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/auth');
-
+const classeRoutes = require('./routes/classe');
 const app = express();
 
 app.use(helmet());
