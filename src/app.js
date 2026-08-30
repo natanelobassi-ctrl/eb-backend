@@ -24,6 +24,7 @@ app.use('/auth', authRoutes);
 app.use('/classe', classeRoutes);
 app.use('/eleve', eleveRoutes);
 app.use('/parent', parentPortalRoutes);
+app.use('/candidature', candidatureRoutes);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: 'Erreur serveur.' });
