@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/auth');
 const classeRoutes = require('./routes/classe');
+const eleveRoutes = require('./routes/eleve');
 const app = express();
 
 app.use(helmet());
