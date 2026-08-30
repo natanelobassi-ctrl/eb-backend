@@ -20,10 +20,9 @@ async function logAction(userId, action, req) {
   await prisma.auditLog.create({
     data: { userId, action, ip: req.ip },
   });
-}
-
-async function register(req, res) {
-  const { email, password, nom, prenom, telephone, whatsapp } = req.body;
+  async function register(req, res) {
+  const { email, password, nom, prenom, telephone, whatsapp, type } = req.body;
+  const roleName = type === 'candidat' ? 'CANDIDAT' : 'PARENT';
 
   if (!email || !password || !nom || !prenom || !telephone) {
     return res.status(400).json({ error: 'Champs obligatoires manquants.' });
@@ -37,28 +36,32 @@ async function register(req, res) {
     return res.status(409).json({ error: 'Un compte existe déjà avec cet e-mail.' });
   }
 
-  const parentRole = await prisma.role.findUnique({ where: { name: 'PARENT' } });
-  if (!parentRole) {
-    return res.status(500).json({ error: 'Rôle PARENT introuvable. Avez-vous lancé le seed ?' });
+  const role = await prisma.role.findUnique({ where: { name: roleName } });
+  if (!role) {
+    return res.status(500).json({ error: `Rôle ${roleName} introuvable. Avez-vous lancé le seed ?` });
   }
 
   const passwordHash = await hashPassword(password);
 
+  const userData = {
+    email,
+    passwordHash,
+    roleId: role.id,
+  };
+
+  if (roleName === 'PARENT') {
+    userData.parent = { create: { nom, prenom, telephone, whatsapp } };
+  }
+
   const user = await prisma.user.create({
-    data: {
-      email,
-      passwordHash,
-      roleId: parentRole.id,
-      parent: {
-        create: { nom, prenom, telephone, whatsapp },
-      },
-    },
+    data: userData,
     include: { role: true },
   });
 
   await logAction(user.id, 'REGISTER', req);
 
   return res.status(201).json({ message: 'Compte créé avec succès. Vous pouvez vous connecter.' });
+}
 }
 
 async function login(req, res) {
