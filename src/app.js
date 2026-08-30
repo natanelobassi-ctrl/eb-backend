@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const classeRoutes = require('./routes/classe');
 const eleveRoutes = require('./routes/eleve');
 const parentPortalRoutes = require('./routes/parentPortal');
+const candidatureRoutes = require('./routes/candidature');
 const app = express();
 
 app.use(helmet());
