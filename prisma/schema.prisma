@@ -114,3 +114,23 @@ model ParentEleve {
 
   @@unique([parentId, eleveId])
 }
+enum StatutCandidature {
+  EN_ATTENTE
+  ACCEPTEE
+  REFUSEE
+}
+
+model Candidature {
+  id            String            @id @default(cuid())
+  user          User              @relation(fields: [userId], references: [id])
+  userId        String            @unique
+  nomEleve      String
+  prenomEleve   String
+  dateNaissance DateTime
+  sexe          String
+  classeVisee   Classe            @relation(fields: [classeViseeId], references: [id])
+  classeViseeId String
+  statut        StatutCandidature @default(EN_ATTENTE)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
